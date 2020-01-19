@@ -1,0 +1,27 @@
+[package]
+name = "cellophane"
+version = "0.1.0"
+authors = ["rustysec <rustysec@gmail.com>"]
+edition = "2018"
+license = "MIT"
+keywords = ["windows", "ffi", "win32"]
+categories = ["external-ffi-bindings", "os::windows-apis"]
+description = "Convenience wrappers of verious types of freeing functions"
+documentation = "https://docs.rs/cellophane/"
+repository = "https://github.com/rustysec/cellophane-rs"
+
+[dependencies]
+cellophane-derive = { path = "./cellophane-derive-rs" }
+
+[target.'cfg(windows)'.dependencies.winapi]
+version = "0.3"
+features = [
+    "handleapi",
+    "lmapibuf",
+    "ntlsa",
+    "securitybaseapi",
+    "winbase"
+]
+
+[package.metadata.docs.rs]
+default-target = "x86_64-pc-windows-gnu"

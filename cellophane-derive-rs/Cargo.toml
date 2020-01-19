@@ -1,0 +1,13 @@
+[package]
+name = "cellophane-derive"
+version = "0.1.0"
+authors = ["rustysec <rustysec@gmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1"
+syn = "1"
+quote = "1"
