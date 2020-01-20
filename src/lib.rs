@@ -10,7 +10,10 @@
 //! extern crate cellophane;
 //!
 //! use cellophane::{HasPointer, FromPointer, FreeWrapper};
+//! #[cfg(not(windows))]
 //! use std::os::raw::c_void;
+//! #[cfg(windows)]
+//! use winapi::ctypes::c_void;
 //!
 //! extern "system" {
 //!     fn malloc(_: u32) -> *mut c_void;
