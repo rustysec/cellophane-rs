@@ -1,5 +1,6 @@
 cellophane
 ==========
+[![Build Status](https://github.com/rustysec/cellophane-rs/workflows/Build/badge.svg)](https://github.com/rustysec/cellophane-rs/actions)
 
 Convenience wrappers over various types of `free` behavior.
 
