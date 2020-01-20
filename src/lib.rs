@@ -46,9 +46,6 @@ pub trait HasPointer {
     /// Builds a new wrapper with a null pointer.
     fn new() -> Self;
 
-    /// Builds a new wrapper over an existing pointer.
-    fn from_ptr(_: *mut c_void) -> Self;
-
     /// Returns a non-mutable reference to the internal pointer.
     fn ptr(&self) -> *const c_void;
 
@@ -63,6 +60,12 @@ pub trait HasPointer {
 
     /// Reads the `n`th type `T` from the pointer
     unsafe fn nth<T>(&self, n: usize) -> T;
+}
+
+/// Wrapper can be built from a single simple pointer
+pub trait FromPointer {
+    /// Builds a new wrapper over an existing pointer.
+    fn from_ptr(_: *mut c_void) -> Self;
 }
 
 extern "system" {

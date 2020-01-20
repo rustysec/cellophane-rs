@@ -4,8 +4,24 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, DeriveInput};
 
+#[proc_macro_derive(FromPointer)]
+pub fn derive_from_pointer(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = input.ident;
+
+    let expanded = quote! {
+        impl FromPointer for #name {
+            fn from_ptr(p: *mut c_void) -> Self {
+                Self(p)
+            }
+        }
+    };
+
+    TokenStream::from(expanded)
+}
+
 #[proc_macro_derive(HasPointer)]
-pub fn derive_get_ptr(input: TokenStream) -> TokenStream {
+pub fn derive_has_pointer(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = input.ident;
 
@@ -13,10 +29,6 @@ pub fn derive_get_ptr(input: TokenStream) -> TokenStream {
         impl HasPointer for #name {
             fn new() -> Self {
                 Self(std::ptr::null_mut())
-            }
-
-            fn from_ptr(p: *mut c_void) -> Self {
-                Self(p)
             }
 
             fn ptr(&self) -> *const c_void {
