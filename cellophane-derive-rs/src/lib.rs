@@ -25,6 +25,18 @@ pub fn derive_get_ptr(input: TokenStream) -> TokenStream {
             fn mut_ptr(&mut self) -> *mut c_void {
                 self.0
             }
+
+            unsafe fn read<T>(&self) -> T {
+                std::ptr::read(self.0 as *const _)
+            }
+
+            unsafe fn read_offset<T>(&self, offset: isize) -> T {
+                std::ptr::read(self.0.offset(offset) as *const _)
+            }
+
+            unsafe fn nth<T>(&self, n: usize) -> T {
+                std::ptr::read(self.0.offset((n * std::mem::size_of::<T>()) as isize) as *const _)
+            }
         }
     };
 

@@ -33,7 +33,7 @@
 #[cfg(windows)]
 pub mod windows;
 
-use cellophane_derive::*;
+pub use cellophane_derive::*;
 #[cfg(not(windows))]
 use std::os::raw::c_void;
 #[cfg(windows)]
@@ -54,6 +54,15 @@ pub trait HasPointer {
 
     /// Returns a mutable reference to the internal pointer.
     fn mut_ptr(&mut self) -> *mut c_void;
+
+    /// Reads type `T` from the pointer
+    unsafe fn read<T>(&self) -> T;
+
+    /// Reads type `T` from pointer at `offset`
+    unsafe fn read_offset<T>(&self, offset: isize) -> T;
+
+    /// Reads the `n`th type `T` from the pointer
+    unsafe fn nth<T>(&self, n: usize) -> T;
 }
 
 extern "system" {
