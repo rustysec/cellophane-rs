@@ -9,7 +9,7 @@
 //! ```no_run
 //! extern crate cellophane;
 //!
-//! use cellophane::{HasPointer, FreeWrapper};
+//! use cellophane::{HasPointer, FromPointer, FreeWrapper};
 //! use std::os::raw::c_void;
 //!
 //! extern "system" {
@@ -74,4 +74,5 @@ extern "system" {
 
 /// Free object using built in (libc) `free` function.
 #[freeing(free)]
+#[derive(FromPointer)]
 pub struct FreeWrapper(*mut c_void);

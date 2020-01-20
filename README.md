@@ -40,7 +40,7 @@ This is where `cellophane` comes in handy.
 ```rust
 extern crate cellophane;
 
-use cellophane::{HasPointer, FreeWrapper};
+use cellophane::{HasPointer, FromPointer, FreeWrapper};
 use std::os::raw::c_void;
 
 extern "system" {
