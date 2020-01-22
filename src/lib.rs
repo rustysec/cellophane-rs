@@ -11,9 +11,9 @@
 //!
 //! use cellophane::{HasPointer, FromPointer, FreeWrapper};
 //! #[cfg(not(windows))]
-//! use std::os::raw::c_void;
+//! pub use std::os::raw::c_void;
 //! #[cfg(windows)]
-//! use winapi::ctypes::c_void;
+//! pub use winapi::ctypes::c_void;
 //!
 //! extern "system" {
 //!     fn malloc(_: u32) -> *mut c_void;
@@ -53,7 +53,7 @@ pub trait HasPointer {
     fn ptr(&self) -> *const c_void;
 
     /// Returns a mutable reference to the internal pointer.
-    fn mut_ptr(&mut self) -> *mut c_void;
+    fn mut_ptr(&mut self) -> &mut *mut c_void;
 
     /// Reads type `T` from the pointer
     ///

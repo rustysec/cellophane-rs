@@ -52,6 +52,7 @@ pub struct FreeSidWrapper(*mut c_void);
 #[link(name = "wintrust")]
 extern "system" {
     fn CryptCATAdminReleaseContext(h_cat_admin: *mut c_void, dw_flags: u32) -> u32;
+
     fn CryptCATAdminReleaseCatalogContext(
         h_cat_admin: *mut c_void,
         h_cat_info: *mut c_void,
@@ -81,7 +82,7 @@ pub struct CryptCATAdminReleaseCatalogContextWrapper<'ctx>(
 
 impl<'ctx> CryptCATAdminReleaseCatalogContextWrapper<'ctx> {
     /// Builds a new wrapper with a null pointer.
-    pub fn new(admin: &'ctx CryptCATAdminReleaseContextWrapper) -> Self {
+    pub fn new(_: *mut c_void, admin: &'ctx CryptCATAdminReleaseContextWrapper) -> Self {
         CryptCATAdminReleaseCatalogContextWrapper(std::ptr::null_mut(), admin)
     }
 
@@ -130,6 +131,40 @@ impl<'ctx> Drop for CryptCATAdminReleaseCatalogContextWrapper<'ctx> {
     fn drop(&mut self) {
         unsafe {
             CryptCATAdminReleaseCatalogContext(self.1.ptr() as _, self.0, 0);
+        }
+    }
+}
+
+#[link(name = "crypt32")]
+extern "system" {
+    pub fn CertFreeCertificateContext(context: *const c_void) -> u32;
+
+    pub fn CertCloseStore(cert_store: *const c_void, flags: u32) -> u32;
+
+    pub fn CryptMsgClose(crypt_msg: *const c_void) -> u32;
+
+}
+
+/// The CertFreeCertificateContext function frees a certificate context by decrementing its reference count. When the reference count goes to zero, CertFreeCertificateContext frees the memory used by a certificate context.
+#[freeing(CertFreeCertificateContext)]
+#[derive(FromPointer)]
+pub struct CertFreeCertificateContextWrapper(*mut c_void);
+
+/// The CryptMsgClose function closes a cryptographic message handle. At each call to this function, the reference count on the message is reduced by one. When the reference count reaches zero, the message is fully released.
+#[freeing(CryptMsgClose)]
+#[derive(FromPointer)]
+pub struct CryptMsgCloseWrapper(*mut c_void);
+
+/// The CertCloseStore function closes a certificate store handle and reduces the reference count on the store. There needs to be a corresponding call to CertCloseStore for each successful call to the CertOpenStore or CertDuplicateStore functions.
+#[derive(FromPointer, HasPointer)]
+pub struct CertCloseStoreWrapper(*mut c_void);
+
+impl Drop for CertCloseStoreWrapper {
+    fn drop(&mut self) {
+        if !self.0.is_null() {
+            unsafe {
+                CertCloseStore(self.0, 0);
+            }
         }
     }
 }

@@ -34,8 +34,9 @@ pub fn derive_has_pointer(input: TokenStream) -> TokenStream {
             fn ptr(&self) -> *const c_void {
                 self.0
             }
-            fn mut_ptr(&mut self) -> *mut c_void {
-                self.0
+
+            fn mut_ptr(&mut self) -> &mut *mut c_void {
+                &mut self.0
             }
 
             unsafe fn read<T>(&self) -> T {
