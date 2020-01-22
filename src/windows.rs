@@ -79,6 +79,53 @@ pub struct CryptCATAdminReleaseCatalogContextWrapper<'ctx>(
     &'ctx CryptCATAdminReleaseContextWrapper,
 );
 
+impl<'ctx> CryptCATAdminReleaseCatalogContextWrapper<'ctx> {
+    /// Builds a new wrapper with a null pointer.
+    pub fn new(admin: &'ctx CryptCATAdminReleaseContextWrapper) -> Self {
+        CryptCATAdminReleaseCatalogContextWrapper(std::ptr::null_mut(), admin)
+    }
+
+    /// Returns a non-mutable reference to the internal pointer.
+    pub fn ptr(&self) -> *const c_void {
+        self.0
+    }
+
+    /// Returns a mutable reference to the internal pointer.
+    pub fn mut_ptr(&mut self) -> *mut c_void {
+        self.0
+    }
+
+    /// Reads type `T` from the pointer
+    ///
+    /// # Safety
+    ///
+    /// This function uses unsafe `read`.
+    pub unsafe fn read<T>(&self) -> T {
+        std::ptr::read(self.0 as *const _)
+    }
+
+    /// Reads type `T` from pointer at `offset`
+    ///
+    /// # Safety
+    ///
+    /// This function uses unsafe `read`.
+    pub unsafe fn read_offset<T>(&self, offset: isize) -> T {
+        std::ptr::read(self.0.offset(offset) as *const _)
+    }
+
+    /// Reads the `n`th type `T` from the pointer
+    ///
+    /// # Safety
+    ///
+    /// This function uses unsafe `read`.
+    pub unsafe fn nth<T>(&self, n: usize) -> T {
+        std::ptr::read(
+            self.0
+                .offset(n as isize * std::mem::size_of::<T>() as isize) as *const _,
+        )
+    }
+}
+
 impl<'ctx> Drop for CryptCATAdminReleaseCatalogContextWrapper<'ctx> {
     fn drop(&mut self) {
         unsafe {
