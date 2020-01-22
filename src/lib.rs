@@ -49,11 +49,14 @@ pub trait HasPointer {
     /// Builds a new wrapper with a null pointer.
     fn new() -> Self;
 
-    /// Returns a non-mutable reference to the internal pointer.
+    /// Returns non-mutable internal pointer.
     fn ptr(&self) -> *const c_void;
 
+    /// Returns a mutable internal pointer.
+    fn mut_ptr(&mut self) -> *mut c_void;
+
     /// Returns a mutable reference to the internal pointer.
-    fn mut_ptr(&mut self) -> &mut *mut c_void;
+    fn mut_ref_ptr(&mut self) -> &mut *mut c_void;
 
     /// Reads type `T` from the pointer
     ///

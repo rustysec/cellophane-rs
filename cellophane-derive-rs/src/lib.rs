@@ -35,7 +35,11 @@ pub fn derive_has_pointer(input: TokenStream) -> TokenStream {
                 self.0
             }
 
-            fn mut_ptr(&mut self) -> &mut *mut c_void {
+            fn mut_ptr(&mut self) -> *mut c_void {
+                self.0
+            }
+
+            fn mut_ref_ptr(&mut self) -> &mut *mut c_void {
                 &mut self.0
             }
 
