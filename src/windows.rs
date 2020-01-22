@@ -48,3 +48,41 @@ pub struct CloseHandleWrapper(*mut c_void);
 #[freeing(FreeSid)]
 #[derive(FromPointer)]
 pub struct FreeSidWrapper(*mut c_void);
+
+#[link(name = "wintrust")]
+extern "system" {
+    fn CryptCATAdminReleaseContext(h_cat_admin: *mut c_void, dw_flags: u32) -> u32;
+    fn CryptCATAdminReleaseCatalogContext(
+        h_cat_admin: *mut c_void,
+        h_cat_info: *mut c_void,
+        dw_flags: u32,
+    ) -> u32;
+}
+
+/// The CryptCATAdminReleaseContext function releases the handle previously assigned by the CryptCATAdminAcquireContext function. This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+#[derive(FromPointer, HasPointer)]
+pub struct CryptCATAdminReleaseContextWrapper(*mut c_void);
+
+impl Drop for CryptCATAdminReleaseContextWrapper {
+    fn drop(&mut self) {
+        if !self.0.is_null() {
+            unsafe {
+                CryptCATAdminReleaseContext(self.0, 0);
+            }
+        }
+    }
+}
+
+/// The CryptCATAdminReleaseCatalogContext function releases a handle to a catalog context previously returned by the CryptCATAdminAddCatalog function. This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
+pub struct CryptCATAdminReleaseCatalogContextWrapper<'ctx>(
+    *mut c_void,
+    &'ctx CryptCATAdminReleaseContextWrapper,
+);
+
+impl<'ctx> Drop for CryptCATAdminReleaseCatalogContextWrapper<'ctx> {
+    fn drop(&mut self) {
+        unsafe {
+            CryptCATAdminReleaseCatalogContext(self.1.ptr() as _, self.0, 0);
+        }
+    }
+}

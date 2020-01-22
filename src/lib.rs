@@ -56,12 +56,24 @@ pub trait HasPointer {
     fn mut_ptr(&mut self) -> *mut c_void;
 
     /// Reads type `T` from the pointer
+    ///
+    /// # Safety
+    ///
+    /// This function uses unsafe `read`.
     unsafe fn read<T>(&self) -> T;
 
     /// Reads type `T` from pointer at `offset`
+    ///
+    /// # Safety
+    ///
+    /// This function uses unsafe `read`.
     unsafe fn read_offset<T>(&self, offset: isize) -> T;
 
     /// Reads the `n`th type `T` from the pointer
+    ///
+    /// # Safety
+    ///
+    /// This function uses unsafe `read`.
     unsafe fn nth<T>(&self, n: usize) -> T;
 }
 

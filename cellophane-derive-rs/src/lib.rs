@@ -47,7 +47,7 @@ pub fn derive_has_pointer(input: TokenStream) -> TokenStream {
             }
 
             unsafe fn nth<T>(&self, n: usize) -> T {
-                std::ptr::read(self.0.offset((n * std::mem::size_of::<T>()) as isize) as *const _)
+                std::ptr::read(self.0.offset((n as isize * std::mem::size_of::<T>() as isize)) as *const _)
             }
         }
     };
