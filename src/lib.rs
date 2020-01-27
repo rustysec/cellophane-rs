@@ -52,12 +52,6 @@ pub trait HasPointer {
     /// Returns non-mutable internal pointer.
     fn ptr(&self) -> *const c_void;
 
-    /// Returns a mutable internal pointer.
-    fn mut_ptr(&mut self) -> *mut c_void;
-
-    /// Returns a mutable reference to the internal pointer.
-    fn mut_ref_ptr(&mut self) -> &mut *mut c_void;
-
     /// Reads type `T` from the pointer
     ///
     /// # Safety
@@ -93,4 +87,4 @@ extern "system" {
 /// Free object using built in (libc) `free` function.
 #[freeing(free)]
 #[derive(FromPointer)]
-pub struct FreeWrapper(*mut c_void);
+pub struct FreeWrapper(pub *mut c_void);

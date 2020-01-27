@@ -20,34 +20,34 @@ use winapi::{
 ///
 #[freeing(LocalFree)]
 #[derive(FromPointer)]
-pub struct LocalFreeWrapper(*mut c_void);
+pub struct LocalFreeWrapper(pub *mut c_void);
 
 /// Frees the specified global memory object and invalidates its handle.
 ///
 /// A handle to the global memory object. This handle is returned by either the GlobalAlloc or GlobalReAlloc function. It is not safe to free memory allocated with LocalAlloc.
 #[freeing(GlobalFree)]
 #[derive(FromPointer)]
-pub struct GlobalFreeWrapper(*mut c_void);
+pub struct GlobalFreeWrapper(pub *mut c_void);
 
 /// The LsaFreeReturnBuffer function frees the memory used by a buffer previously allocated by the LSA.
 #[freeing(LsaFreeReturnBuffer)]
 #[derive(FromPointer)]
-pub struct LsaFreeReturnBufferWrapper(*mut c_void);
+pub struct LsaFreeReturnBufferWrapper(pub *mut c_void);
 
 /// The NetApiBufferFree function frees the memory that the NetApiBufferAllocate function allocates. Applications should also call NetApiBufferFree to free the memory that other network management functions use internally to return information.
 #[freeing(NetApiBufferFree)]
 #[derive(FromPointer)]
-pub struct NetApiBufferFreeWrapper(*mut c_void);
+pub struct NetApiBufferFreeWrapper(pub *mut c_void);
 
 /// Closes an open object handle.
 #[freeing(CloseHandle)]
 #[derive(FromPointer)]
-pub struct CloseHandleWrapper(*mut c_void);
+pub struct CloseHandleWrapper(pub *mut c_void);
 
 /// The FreeSid function frees a security identifier (SID) previously allocated by using the AllocateAndInitializeSid function.
 #[freeing(FreeSid)]
 #[derive(FromPointer)]
-pub struct FreeSidWrapper(*mut c_void);
+pub struct FreeSidWrapper(pub *mut c_void);
 
 #[link(name = "wintrust")]
 extern "system" {
@@ -62,7 +62,7 @@ extern "system" {
 
 /// The CryptCATAdminReleaseContext function releases the handle previously assigned by the CryptCATAdminAcquireContext function. This function has no associated import library. You must use the LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll.
 #[derive(FromPointer, HasPointer)]
-pub struct CryptCATAdminReleaseContextWrapper(*mut c_void);
+pub struct CryptCATAdminReleaseContextWrapper(pub *mut c_void);
 
 impl Drop for CryptCATAdminReleaseContextWrapper {
     fn drop(&mut self) {
@@ -88,11 +88,6 @@ impl<'ctx> CryptCATAdminReleaseCatalogContextWrapper<'ctx> {
 
     /// Returns a non-mutable reference to the internal pointer.
     pub fn ptr(&self) -> *const c_void {
-        self.0
-    }
-
-    /// Returns a mutable reference to the internal pointer.
-    pub fn mut_ptr(&mut self) -> *mut c_void {
         self.0
     }
 
@@ -148,16 +143,16 @@ extern "system" {
 /// The CertFreeCertificateContext function frees a certificate context by decrementing its reference count. When the reference count goes to zero, CertFreeCertificateContext frees the memory used by a certificate context.
 #[freeing(CertFreeCertificateContext)]
 #[derive(FromPointer)]
-pub struct CertFreeCertificateContextWrapper(*mut c_void);
+pub struct CertFreeCertificateContextWrapper(pub *mut c_void);
 
 /// The CryptMsgClose function closes a cryptographic message handle. At each call to this function, the reference count on the message is reduced by one. When the reference count reaches zero, the message is fully released.
 #[freeing(CryptMsgClose)]
 #[derive(FromPointer)]
-pub struct CryptMsgCloseWrapper(*mut c_void);
+pub struct CryptMsgCloseWrapper(pub *mut c_void);
 
 /// The CertCloseStore function closes a certificate store handle and reduces the reference count on the store. There needs to be a corresponding call to CertCloseStore for each successful call to the CertOpenStore or CertDuplicateStore functions.
 #[derive(FromPointer, HasPointer)]
-pub struct CertCloseStoreWrapper(*mut c_void);
+pub struct CertCloseStoreWrapper(pub *mut c_void);
 
 impl Drop for CertCloseStoreWrapper {
     fn drop(&mut self) {

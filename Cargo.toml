@@ -13,6 +13,12 @@ repository = "https://github.com/rustysec/cellophane-rs"
 [dependencies]
 cellophane-derive = { path = "./cellophane-derive-rs" }
 
+[build-dependencies]
+cc = "1"
+
+[target.'cfg(windows)'.dev-dependencies]
+winapi = { version = "0.3", features = [ "ntlsa" ] }
+
 [target.'cfg(windows)'.dependencies.winapi]
 version = "0.3"
 features = [
