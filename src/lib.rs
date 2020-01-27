@@ -52,6 +52,12 @@ pub trait HasPointer {
     /// Returns non-mutable internal pointer.
     fn ptr(&self) -> *const c_void;
 
+    /// Returns non-mutable internal pointer.
+    fn mut_ptr(&self) -> *mut c_void;
+
+    /// Returns a mutable reference to the internal pointer
+    fn mut_ref(&mut self) -> &mut *mut c_void;
+
     /// Reads type `T` from the pointer
     ///
     /// # Safety

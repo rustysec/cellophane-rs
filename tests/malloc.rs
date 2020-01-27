@@ -26,12 +26,12 @@ fn test_malloc_string() {
 
 #[test]
 fn test_malloc_struct() {
-    let mut bs = FreeWrapper::new();
+    let mut fw = FreeWrapper::new();
     unsafe {
-        malloc_struct(&mut bs.0 as *mut _ as _);
+        malloc_struct(fw.mut_ref() as *mut _ as _);
     }
 
-    let ts: TestStruct = unsafe { bs.read() };
+    let ts: TestStruct = unsafe { fw.read() };
     assert_eq!(ts.first, 1);
     assert_eq!(ts.second, 2);
 }
