@@ -20,3 +20,9 @@ void malloc_struct(void **ts) {
     ((struct TestStruct*)(*ts))->first = 1;
     ((struct TestStruct*)(*ts))->second = 2;
 }
+
+char *malloc_empty_string() {
+    char *empty = (char *)malloc(256);
+    memset(empty, 0, 256);
+    return empty;
+}

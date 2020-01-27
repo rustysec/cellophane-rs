@@ -13,6 +13,7 @@ struct TestStruct {
 #[link(name = "malloc")]
 extern "system" {
     fn malloc_string() -> *mut c_void;
+    fn malloc_empty_string() -> *mut c_void;
     fn malloc_struct(_: *mut *mut TestStruct);
 }
 
@@ -34,4 +35,16 @@ fn test_malloc_struct() {
     let ts: TestStruct = unsafe { fw.read() };
     assert_eq!(ts.first, 1);
     assert_eq!(ts.second, 2);
+}
+
+#[test]
+fn test_malloc_and_write() {
+    let mut fw = FreeWrapper::from_ptr(unsafe { malloc_empty_string() });
+    unsafe {
+        std::ptr::write_bytes(fw.mut_ptr(), b'a', 1);
+    }
+    let s = unsafe { CStr::from_ptr(fw.ptr() as *const _ as _) };
+    let s = s.to_string_lossy().to_string();
+    assert_eq!(s, String::from("a"));
+    assert!(true);
 }
