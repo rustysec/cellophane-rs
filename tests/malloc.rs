@@ -1,3 +1,5 @@
+#![cfg(not(windows))]
+
 use cellophane::{FreeWrapper, FromPointer, HasPointer};
 use std::{ffi::CStr, os::raw::c_void};
 
