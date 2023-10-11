@@ -130,6 +130,7 @@ impl<'ctx> Drop for CryptCATAdminReleaseCatalogContextWrapper<'ctx> {
     }
 }
 
+#[allow(missing_docs)]
 #[link(name = "crypt32")]
 extern "system" {
     pub fn CertFreeCertificateContext(context: *const c_void) -> u32;
@@ -137,7 +138,6 @@ extern "system" {
     pub fn CertCloseStore(cert_store: *const c_void, flags: u32) -> u32;
 
     pub fn CryptMsgClose(crypt_msg: *const c_void) -> u32;
-
 }
 
 /// The CertFreeCertificateContext function frees a certificate context by decrementing its reference count. When the reference count goes to zero, CertFreeCertificateContext frees the memory used by a certificate context.

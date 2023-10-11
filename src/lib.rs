@@ -86,11 +86,13 @@ pub trait FromPointer {
     fn from_ptr(_: *mut c_void) -> Self;
 }
 
+#[cfg(not(all(target_env = "msvc", windows)))]
 extern "system" {
     fn free(_: *mut c_void);
 }
 
 /// Free object using built in (libc) `free` function.
+#[cfg(not(all(target_env = "msvc", windows)))]
 #[freeing(free)]
 #[derive(FromPointer)]
 pub struct FreeWrapper(pub *mut c_void);
