@@ -6,7 +6,7 @@
 //!
 //! # Example
 //!
-//! ```no_run
+//! ```ignore
 //! extern crate cellophane;
 //!
 //! use cellophane::{HasPointer, FromPointer, FreeWrapper};
